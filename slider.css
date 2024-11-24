@@ -872,6 +872,7 @@ html{
 }
 
 .content-card-product h3{
+    color: #ff6c0a;
     grid-row: 2/3;
     grid-column: 1/-1;
     font-weight: 400;
