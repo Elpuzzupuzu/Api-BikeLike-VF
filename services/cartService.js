@@ -29,6 +29,24 @@ exports.emptyCart = async (userId) => {
     return await Cart.destroy({ where: { id_user: userId } });
 };
 
+exports.calculateTotalSales = async () => {
+    try {
+        const carts = await Cart.findAll(); // Obtener todos los carritos
+        let totalSales = 0;
+
+        carts.forEach(cart => {
+            const productList = cart.product_list; // Obtener la lista de productos
+            productList.forEach(product => {
+                totalSales += product.sold * product.price; // Calcular el total
+            });
+        });
+
+        return totalSales;
+    } catch (error) {
+        throw new Error(`Error al calcular el total de ventas: ${error.message}`);
+    }
+};
+
 
 
 

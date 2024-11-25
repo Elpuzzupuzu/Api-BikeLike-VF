@@ -72,6 +72,16 @@ exports.purchaseCart = async (req, res) => {
 };
 
 
+exports.getTotalSales = async (req, res) => {
+    try {
+        const totalSales = await cartService.calculateTotalSales();
+        res.status(200).json({ totalSales }); // Responder con el total de ventas
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 
 
 
