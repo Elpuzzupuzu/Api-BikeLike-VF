@@ -74,14 +74,6 @@ exports.purchaseCart = async (req, res) => {
 
 
 
-exports.getTotalSales = async (req, res) => {
-    try {
-        const totalSales = await cartService.calculateTotalSales(); // Llamar al servicio
-        res.status(200).json({ totalSales }); // Responder con el total
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 
 
 
@@ -99,3 +91,11 @@ exports.getAllCarts = async (req, res) => {
 };
 
 
+exports.getTotalSales = async (req, res) => {
+    try {
+        const totalSales = await cartService.calculateTotalSales(); // Llamar al servicio
+        res.status(200).json({ totalSales }); // Responder con el total
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
