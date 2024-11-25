@@ -7,7 +7,7 @@ router.get('/:userId', cartController.getCartByUserId);
 router.post('/createcart', cartController.createCart);
 
 router.post('/:userId/purchase', cartController.purchaseCart); // 
-router.get('/total-sales', cartController.getTotalSales);
+router.get('/total-sales', cartController.calculateTotalSales);
 
 
 
