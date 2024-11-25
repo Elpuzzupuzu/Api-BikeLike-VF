@@ -35,6 +35,9 @@ exports.calculateTotalSales = async () => {
         // Obtener todos los carritos de la base de datos
         const carts = await Cart.findAll();
 
+        // Verificar si se obtuvieron los carritos
+        console.log(`Carritos obtenidos: ${JSON.stringify(carts)}`);
+
         if (!carts || carts.length === 0) {
             throw new Error('No se encontraron carritos en la base de datos.');
         }
@@ -42,23 +45,21 @@ exports.calculateTotalSales = async () => {
         // Inicializar el total de ventas
         let totalSales = 0;
 
-        // Recorrer cada carrito
-        for (let i = 0; i < carts.length; i++) {
-            const cart = carts[i];
+        // Recorrer cada carrito usando forEach
+        carts.forEach(cart => {
             console.log(`Procesando carrito con ID: ${cart.id_cart}`);
 
             // Asegurarse de que product_list es un array válido
             if (!Array.isArray(cart.product_list)) {
                 console.warn(`El carrito con ID ${cart.id_cart} tiene un product_list no válido:`, cart.product_list);
-                continue;
+                return; // Saltamos este carrito si product_list no es válido
             }
 
             // Inicializar el total del carrito
             let cartTotal = 0;
 
-            // Recorrer cada producto del carrito
-            for (let j = 0; j < cart.product_list.length; j++) {
-                const product = cart.product_list[j];
+            // Recorrer cada producto del carrito usando forEach
+            cart.product_list.forEach(product => {
                 console.log(`Procesando producto: ${JSON.stringify(product)}`);
 
                 // Calcular el total del producto (precio * cantidad vendida)
@@ -67,12 +68,12 @@ exports.calculateTotalSales = async () => {
 
                 // Acumular el total del carrito
                 cartTotal += productTotal;
-            }
+            });
 
             console.log(`Total del carrito con ID ${cart.id_cart}: ${cartTotal}`);
             // Sumar el total del carrito al total general
             totalSales += cartTotal;
-        }
+        });
 
         console.log(`Ventas totales calculadas: ${totalSales}`);
         return totalSales;
@@ -81,6 +82,7 @@ exports.calculateTotalSales = async () => {
         throw new Error(`Error al calcular el total de ventas: ${error.message}`);
     }
 };
+
 
 
 
