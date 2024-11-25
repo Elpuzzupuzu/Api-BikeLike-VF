@@ -7,8 +7,7 @@ router.get('/:userId', cartController.getCartByUserId);
 router.post('/createcart', cartController.createCart);
 
 router.post('/:userId/purchase', cartController.purchaseCart); // 
-router.get('/total-sales', cartController.calculateTotalSales);
-
+router.get('/ventas/todas', cartController.getSales);  // Ruta para obtener el total de las ventas es importante tener en cuenta el fetch y su estructura //
 
 
 

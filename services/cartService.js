@@ -25,62 +25,47 @@ exports.getAllCarts = async () => {
 };
 
 
-exports.emptyCart = async (userId) => {
-    return await Cart.destroy({ where: { id_user: userId } });
+
+
+// Servicio para obtener todas las ventas (carritos)
+exports.getSales = async () => {
+    try {
+        // Obtener todos los carritos de la base de datos
+        const carts = await Cart.findAll({
+            raw: true,  // raw: true para obtener solo los datos sin instancias de Sequelize
+        });
+
+        // Sumar el total de todos los carritos
+        const totalAmount = carts.reduce((total, cart) => {
+            const productList = cart.product_list;  // Obtener el JSON de productos
+
+            // Verificar si 'product_list' está presente y es un array
+            if (productList && Array.isArray(productList)) {
+                const cartTotal = productList.reduce((sum, product) => {
+                    return sum + (product.sold * product.price);  // Sumar el monto de cada producto
+                }, 0);
+                
+                // Sumar el total de este carrito al total general
+                total += cartTotal;
+            }
+            return total;  // Devolver el total acumulado
+        }, 0);
+
+        // Redondear el monto total a 2 decimales
+        return parseFloat(totalAmount.toFixed(2));  // Redondeado a 2 decimales
+
+    } catch (error) {
+        throw new Error(`Error al obtener los carritos: ${error.message}`);
+    }
 };
 
 
-exports.calculateTotalSales = async () => {
-    try {
-        // Obtener todos los carritos de la base de datos
-        const carts = await Cart.findAll();
 
-        // Verificar si se obtuvieron los carritos
-        console.log(`Carritos obtenidos: ${JSON.stringify(carts)}`);
 
-        if (!carts || carts.length === 0) {
-            throw new Error('No se encontraron carritos en la base de datos.');
-        }
+//----------------------------------///
 
-        // Inicializar el total de ventas
-        let totalSales = 0;
-
-        // Recorrer cada carrito usando forEach
-        carts.forEach(cart => {
-            console.log(`Procesando carrito con ID: ${cart.id_cart}`);
-
-            // Asegurarse de que product_list es un array válido
-            if (!Array.isArray(cart.product_list)) {
-                console.warn(`El carrito con ID ${cart.id_cart} tiene un product_list no válido:`, cart.product_list);
-                return; // Saltamos este carrito si product_list no es válido
-            }
-
-            // Inicializar el total del carrito
-            let cartTotal = 0;
-
-            // Recorrer cada producto del carrito usando forEach
-            cart.product_list.forEach(product => {
-                console.log(`Procesando producto: ${JSON.stringify(product)}`);
-
-                // Calcular el total del producto (precio * cantidad vendida)
-                const productTotal = product.price * product.sold;
-                console.log(`Subtotal del producto: ${productTotal}`);
-
-                // Acumular el total del carrito
-                cartTotal += productTotal;
-            });
-
-            console.log(`Total del carrito con ID ${cart.id_cart}: ${cartTotal}`);
-            // Sumar el total del carrito al total general
-            totalSales += cartTotal;
-        });
-
-        console.log(`Ventas totales calculadas: ${totalSales}`);
-        return totalSales;
-    } catch (error) {
-        console.error('Error al calcular el total de ventas:', error);
-        throw new Error(`Error al calcular el total de ventas: ${error.message}`);
-    }
+exports.emptyCart = async (userId) => {
+    return await Cart.destroy({ where: { id_user: userId } });
 };
 
 

@@ -92,18 +92,22 @@ exports.getAllCarts = async (req, res) => {
 
 
 
-// Controlador para manejar la ruta y llamar al servicio
-exports.calculateTotalSales = async (req, res) => {
-    try {
-        // Llamamos al servicio que calcula el total de ventas
-        const totalSales = await CartService.calculateTotalSales();
 
-        // Respondemos con el total de ventas
+
+
+
+// Controlador para obtener los carritos con sus totales
+
+exports.getSales = async (req, res) => {
+    try {
+        // Llamar al servicio para obtener el monto total de todos los carritos
+        const totalSales = await cartService.getSales();
+        
+        // Devolver la respuesta con el monto total
         res.status(200).json({ totalSales });
     } catch (error) {
-        // Si hay un error, respondemos con un mensaje de error
-        console.error('Error al calcular el total de ventas:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Error al obtener el monto total de las ventas:', error.message);
+        res.status(500).json({ message: 'Error al obtener el monto total de las ventas' });
     }
 };
 
