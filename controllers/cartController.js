@@ -91,35 +91,19 @@ exports.getAllCarts = async (req, res) => {
 };
 
 
+
+// Controlador para manejar la ruta y llamar al servicio
 exports.calculateTotalSales = async (req, res) => {
     try {
-        const carts = await Cart.findAll();
+        // Llamamos al servicio que calcula el total de ventas
+        const totalSales = await CartService.calculateTotalSales();
 
-        console.log('Carritos obtenidos de la base de datos:', JSON.stringify(carts, null, 2)); // Log detallado
-
-        if (!carts || carts.length === 0) {
-            console.log('No se encontraron carritos en la base de datos.');
-            return res.status(404).json({ error: 'No se encontraron carritos.' });
-        }
-
-        const totalSales = carts.reduce((total, cart) => {
-            console.log(`Procesando carrito con ID: ${cart.id_cart}`);
-            console.log('Lista de productos:', cart.product_list);
-
-            const cartTotal = cart.product_list.reduce((sum, product) => {
-                console.log(`Producto procesado: ${JSON.stringify(product)}`);
-                return sum + (product.price * product.sold);
-            }, 0);
-
-            console.log(`Total para el carrito con ID ${cart.id_cart}: ${cartTotal}`);
-            return total + cartTotal;
-        }, 0);
-
-        console.log('Ventas totales calculadas:', totalSales);
+        // Respondemos con el total de ventas
         res.status(200).json({ totalSales });
     } catch (error) {
+        // Si hay un error, respondemos con un mensaje de error
         console.error('Error al calcular el total de ventas:', error);
-        res.status(500).json({ error: 'Error al calcular el total de ventas' });
+        res.status(500).json({ error: error.message });
     }
 };
 
