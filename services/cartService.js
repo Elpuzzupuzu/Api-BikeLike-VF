@@ -32,25 +32,15 @@ exports.emptyCart = async (userId) => {
 
 exports.calculateTotalSales = async () => {
     try {
-        // Obtener todos los carritos
         const carts = await Cart.findAll();
+        const totalSales = carts.reduce((total, cart) => {
+            const cartTotal = cart.product_list.reduce((sum, product) => {
+                return sum + (product.price * product.sold);
+            }, 0);
+            return total + cartTotal;
+        }, 0);
 
-        let totalSales = 0;
-
-        carts.forEach(cart => {
-            const productList = cart.product_list; // Obtener la lista de productos
-
-            // Validar que la lista no sea nula y sea un array
-            if (productList && Array.isArray(productList)) {
-                productList.forEach(product => {
-                    if (product.sold && product.price) {
-                        totalSales += product.sold * product.price; // Calcular el total
-                    }
-                });
-            }
-        });
-
-        return totalSales; // Devolver el total calculado
+        return totalSales;
     } catch (error) {
         throw new Error(`Error al calcular el total de ventas: ${error.message}`);
     }

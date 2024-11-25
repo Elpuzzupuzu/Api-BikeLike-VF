@@ -91,11 +91,21 @@ exports.getAllCarts = async (req, res) => {
 };
 
 
-exports.getTotalSales = async (req, res) => {
+exports.calculateTotalSales = async (req, res) => {
     try {
-        const totalSales = await cartService.calculateTotalSales(); // Llamar al servicio
-        res.status(200).json({ totalSales }); // Responder con el total
+        const carts = await Cart.findAll();
+        
+        const totalSales = carts.reduce((total, cart) => {
+            const cartTotal = cart.product_list.reduce((sum, product) => {
+                return sum + (product.price * product.sold); // Sumar precio por cantidad vendida
+            }, 0);
+            return total + cartTotal;
+        }, 0);
+
+        res.status(200).json({ totalSales });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error al calcular el total de ventas:', error);
+        res.status(500).json({ error: 'Error al calcular el total de ventas' });
     }
 };
+
