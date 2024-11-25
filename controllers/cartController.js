@@ -94,18 +94,33 @@ exports.getAllCarts = async (req, res) => {
 exports.calculateTotalSales = async (req, res) => {
     try {
         const carts = await Cart.findAll();
-        
+
+        console.log('Carritos obtenidos de la base de datos:', JSON.stringify(carts, null, 2)); // Log detallado
+
+        if (!carts || carts.length === 0) {
+            console.log('No se encontraron carritos en la base de datos.');
+            return res.status(404).json({ error: 'No se encontraron carritos.' });
+        }
+
         const totalSales = carts.reduce((total, cart) => {
+            console.log(`Procesando carrito con ID: ${cart.id_cart}`);
+            console.log('Lista de productos:', cart.product_list);
+
             const cartTotal = cart.product_list.reduce((sum, product) => {
-                return sum + (product.price * product.sold); // Sumar precio por cantidad vendida
+                console.log(`Producto procesado: ${JSON.stringify(product)}`);
+                return sum + (product.price * product.sold);
             }, 0);
+
+            console.log(`Total para el carrito con ID ${cart.id_cart}: ${cartTotal}`);
             return total + cartTotal;
         }, 0);
 
+        console.log('Ventas totales calculadas:', totalSales);
         res.status(200).json({ totalSales });
     } catch (error) {
         console.error('Error al calcular el total de ventas:', error);
         res.status(500).json({ error: 'Error al calcular el total de ventas' });
     }
 };
+
 
