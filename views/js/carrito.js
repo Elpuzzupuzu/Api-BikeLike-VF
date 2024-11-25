@@ -1,5 +1,4 @@
-
-    // Obtener el carrito de la compra actual
+// Obtener el carrito de la compra actual
 const productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito"));
 
 // Contenedores y elementos de UI
@@ -11,6 +10,10 @@ const botonVaciar = document.querySelector("#carrito-acciones-vaciar");
 const contenedorTotal = document.querySelector("#total");
 let botonesEliminar = document.querySelectorAll(".carrito-producto-eliminar");
 const botonComprar = document.querySelector("#carrito-acciones-comprar");
+
+// Obtener el userId desde la URL
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('userId');  // Obtener el id_user desde la URL
 
 // Cargar productos en el carrito
 function cargarProductosCarrito() {
@@ -42,7 +45,6 @@ function cargarProductosCarrito() {
                 <div class="carrito-producto-subtotal">
                     <small>subtotal</small>
                     <p>$${(producto.price * producto.sold).toFixed(2)}</p>
-
                 </div>
                 <button class="carrito-producto-eliminar" id="${producto.id_product}"><i class="bi bi-trash-fill"></i></button>
             `;
@@ -96,14 +98,8 @@ function actualizarTotal() {
     contenedorTotal.innerText = `$${totalCalculado.toFixed(2)}`;
 }
 
-
-
-
-
 // Función para manejar la compra
 async function comprarCarrito() {
-    const userId = localStorage.getItem("id_user"); // Obtener el id_user desde localStorage
-
     if (!userId) {
         Swal.fire({
             icon: 'warning',
@@ -170,8 +166,5 @@ async function comprarCarrito() {
     }
 }
 
-
-
 // Asignar la función al botón de comprar
 botonComprar.addEventListener("click", comprarCarrito);
-
