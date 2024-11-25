@@ -1,4 +1,5 @@
-// Obtener el carrito de la compra actual
+
+    // Obtener el carrito de la compra actual
 const productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito"));
 
 // Contenedores y elementos de UI
@@ -10,10 +11,6 @@ const botonVaciar = document.querySelector("#carrito-acciones-vaciar");
 const contenedorTotal = document.querySelector("#total");
 let botonesEliminar = document.querySelectorAll(".carrito-producto-eliminar");
 const botonComprar = document.querySelector("#carrito-acciones-comprar");
-
-// Obtener el userId desde la URL
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('userId');  // Obtener el id_user desde la URL
 
 // Cargar productos en el carrito
 function cargarProductosCarrito() {
@@ -31,7 +28,7 @@ function cargarProductosCarrito() {
             div.innerHTML = ` 
                 <img class="carrito-producto-imagen" src="${producto.img}" alt="${producto.name}">
                 <div class="carrito-producto-titulo">
-                    <small>Titulo</small>
+                    <small>Producto</small>
                     <h3>${producto.name}</h3>
                 </div>
                 <div class="carrito-producto-cantidad">
@@ -45,6 +42,7 @@ function cargarProductosCarrito() {
                 <div class="carrito-producto-subtotal">
                     <small>subtotal</small>
                     <p>$${(producto.price * producto.sold).toFixed(2)}</p>
+
                 </div>
                 <button class="carrito-producto-eliminar" id="${producto.id_product}"><i class="bi bi-trash-fill"></i></button>
             `;
@@ -98,8 +96,14 @@ function actualizarTotal() {
     contenedorTotal.innerText = `$${totalCalculado.toFixed(2)}`;
 }
 
+
+
+
+
 // Función para manejar la compra
 async function comprarCarrito() {
+    const userId = localStorage.getItem("id_user"); // Obtener el id_user desde localStorage
+
     if (!userId) {
         Swal.fire({
             icon: 'warning',
@@ -112,7 +116,7 @@ async function comprarCarrito() {
 
     try {
         // Aquí incluimos el id_user junto con los productos en el cuerpo de la solicitud
-        const response = await fetch(`https://api-bikelike-vf.onrender.com/cart/${userId}/purchase`, {
+        const response = await fetch(`https:api-bikelike-vf.onrender.com/cart/purchase`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -166,5 +170,8 @@ async function comprarCarrito() {
     }
 }
 
+
+
 // Asignar la función al botón de comprar
 botonComprar.addEventListener("click", comprarCarrito);
+
