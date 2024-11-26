@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextBtn = document.getElementById('next-btn');
     const productsContainer = document.getElementById('products-container');
     const slider = document.getElementById('product-slider');
+    actualizarNumerito();
 
     if (!numerito || !prevBtn || !nextBtn || !productsContainer || !slider) {
         console.error('Algunos elementos del DOM no se encontraron.');

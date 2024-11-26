@@ -140,6 +140,7 @@ async function comprarCarrito() {
             // Limpiar el carrito después de la compra
             productosEnCarrito.length = 0;
             localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+            // AQUI DEBO ACTUALIZAR LA LOGICA DEL PAGINADO PROBABLEMENTE
 
             // Actualizar la UI
             contenedorCarritoVacio.classList.add("disabled");
