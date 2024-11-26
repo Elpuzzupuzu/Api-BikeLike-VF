@@ -130,6 +130,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     showConfirmButton: false,
                     timer: 2000
                 });
+
+                 // Limpiar el carrito después de la compra
+            productosEnCarrito.length = 0;
+            localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+
+            // Actualizar la UI
+            contenedorCarritoVacio.classList.add("disabled");
+            contenedorCarritoProductos.classList.add("disabled");
+            contenedorCarritoAcciones.classList.add("disabled");
+            contenedorCarritoComprado.classList.remove("disabled");
+
+
+
             } else {
                 const errorData = await response.json();
                 Swal.fire({
@@ -138,6 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     text: errorData.error,
                     confirmButtonText: 'Aceptar'
                 });
+
+
+
             }
         } catch (error) {
             Swal.fire({
