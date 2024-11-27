@@ -90,3 +90,23 @@ exports.getUserById = async (id_user) => {
 
     return user;
 };
+
+// Actualiza los datos del usuario por ID
+exports.updateUser = async (id_user, updatedData) => {
+    try {
+        // Buscar el usuario por ID
+        const user = await User.findOne({ where: { id_user } });
+
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        // Actualiza los campos proporcionados
+        await user.update(updatedData);
+
+        // Devuelve el usuario actualizado
+        return user;
+    } catch (error) {
+        throw error;  // Re-lanzar el error para que sea manejado en el controlador
+    }
+};

@@ -69,3 +69,20 @@ exports.getUserById = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+// Controlador para actualizar los datos del usuario
+exports.updateUser = async (req, res) => {
+    const { id_user } = req.params; // Obtenemos el id_user desde los parámetros de la URL
+    const updatedData = req.body;   // Los datos que el usuario quiere actualizar
+
+    try {
+        // Llamamos al servicio para actualizar el usuario
+        const updatedUser = await userService.updateUser(id_user, updatedData);
+
+        // Si la actualización es exitosa, respondemos con el usuario actualizado
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        // Si hay un error, respondemos con el error
+        res.status(400).json({ message: error.message });
+    }
+};
