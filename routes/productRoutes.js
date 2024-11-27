@@ -13,7 +13,8 @@ router.put('/update-stock/:id', productController.updateProductStock);
 router.get('/slider', productController.getProductsForSlider);
 router.get('/limit-edition-slider',productController.getLimitEditionSlider);
 router.get('/:id', productController.getProductById);  // esta ruta entra en conflicto siempre hay que tener en cuenta las rutas 
-
+// Ruta para actualizar un producto por ID
+router.put('/update/:productId', productController.updateProduct);
 
 
 

@@ -11,15 +11,6 @@ exports.getAllProducts = async (req, res) => {
 
 
 
-// exports.getAllProducts = async (req, res) => {
-//     try {
-//         throw new Error("Simulated error");
-//         const products = await productService.getAllProducts();
-//         res.json(products);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
 
 
 
@@ -38,6 +29,24 @@ exports.getProductById = async (req, res) => {
     }
 };
 
+const productService = require('../services/productService');
+
+// Controlador para actualizar los datos de un producto
+exports.updateProduct = async (req, res) => {
+    const { productId } = req.params;  // Obtener el ID del producto desde los parámetros de la URL
+    const updatedData = req.body;      // Los datos a actualizar
+
+    try {
+        // Llamamos al servicio para actualizar el producto
+        const updatedProduct = await productService.updateProduct(productId, updatedData);
+
+        // Si la actualización es exitosa, devolvemos el producto actualizado
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        // Si ocurre un error, devolvemos un mensaje con el error
+        res.status(400).json({ message: error.message });
+    }
+};
 
 
 

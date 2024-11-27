@@ -43,20 +43,6 @@ exports.getallLimitEditionProducts = async () => {
 
 
 
-
-// exports.getLimitEditionProducts = async () => {  // aqui esta el erro
-//     return await Product.findAll({
-//         where: {
-//             limit_edition: true
-//         }
-//     });
-// };
-
-
-
-
-
-
 exports.createProduct = async (data) => {
     return await Product.create(data);  // Asegúrate de que 'data' incluya 'img'
 };
@@ -65,6 +51,32 @@ exports.createProduct = async (data) => {
 
 exports.getProductById = async (productId) => {
     return await Product.findByPk(productId);
+};
+
+
+
+// Actualiza un producto por su ID
+exports.updateProduct = async (productId, updatedData) => {
+    try {
+        // Buscar el producto por su ID
+        const product = await Product.findByPk(productId);
+
+        if (!product) {
+            throw new Error('Producto no encontrado');
+        }
+
+        // Excluir campos que no se deben actualizar (en este caso el id)
+        const { id, ...fieldsToUpdate } = updatedData;
+
+        // Actualizar los campos proporcionados
+        await product.update(fieldsToUpdate);
+
+        // Devolver el producto actualizado
+        return product;
+    } catch (error) {
+        // Manejo de errores
+        throw error;
+    }
 };
 
 
