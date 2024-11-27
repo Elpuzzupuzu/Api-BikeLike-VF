@@ -29,7 +29,6 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-const productService = require('../services/productService');
 
 // Controlador para actualizar los datos de un producto
 exports.updateProduct = async (req, res) => {
