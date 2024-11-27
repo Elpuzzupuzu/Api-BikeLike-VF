@@ -25,20 +25,6 @@ exports.register = async (req, res) => {
 
 
 
-// // Función para login de usuario
-// exports.login = async (req, res) => {
-//     try {
-//         const { user_name, password } = req.body;
-
-//         // Llama al servicio para autenticar al usuario
-//         const token = await userService.loginUser(user_name, password);
-
-//         // Enviar el token JWT al cliente
-//         res.json({ accessToken: token });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error en el servidor', error: error.message });
-//     }
-// };
 
 
 exports.login = async (req, res) => {
@@ -54,3 +40,15 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Error en el servidor', error: error.message });
     }
 };
+
+
+// Controlador para obtener usuarios paginados
+exports.getUsersPaginated = async (req, res) => {
+    try {
+        const { page = 1, pageSize = 10 } = req.query; // Valores predeterminados
+        const users = await userService.getUsersPaginated(Number(page), Number(pageSize));
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
