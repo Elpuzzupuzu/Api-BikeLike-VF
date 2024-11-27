@@ -77,3 +77,16 @@ exports.getUsersPaginated = async (page, pageSize) => {
         users
     };
 };
+
+// Servicio para obtener un usuario por su ID
+exports.getUserById = async (id_user) => {
+    // Busca el usuario por ID
+    const user = await User.findOne({ where: { id_user } });
+
+    // Si el usuario no se encuentra, lanza un error
+    if (!user) {
+        throw new Error('Usuario no encontrado');
+    }
+
+    return user;
+};

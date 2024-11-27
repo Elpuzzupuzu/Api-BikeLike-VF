@@ -27,6 +27,7 @@ exports.register = async (req, res) => {
 
 
 
+
 exports.login = async (req, res) => {
     try {
         const { user_name, password } = req.body;
@@ -52,3 +53,19 @@ exports.getUsersPaginated = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+
+// Controlador para obtener un usuario por ID
+exports.getUserById = async (req, res) => {
+    const { id_user } = req.params; // Obtiene el ID del usuario desde los parámetros de la ruta
+
+    try {
+        const user = await userService.getUserById(id_user); // Llama al servicio
+
+        // Retorna el usuario encontrado
+        res.status(200).json(user);
+    } catch (error) {
+        // Si ocurre un error (usuario no encontrado), responde con un error
+        res.status(404).json({ message: error.message });
+    }
+};
