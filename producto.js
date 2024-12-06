@@ -56,7 +56,7 @@ async function fetchAndRenderProduct() {
 
             const productHtml = `
                 <div class="breadcrumb">
-                    <a href="main.html">Home</a> / <a href="#">${product.season}</a> / <a href="#">Plush Toys</a> / ${product.name}
+                    <a href="main.html">Home</a> / <a href="#">${product.category}</a> / <a href="#">Plush Toys</a> / ${product.name}
                 </div>
 
                 <div class="product-container">
